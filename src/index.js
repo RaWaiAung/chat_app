@@ -24,7 +24,12 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", (message) => {
     io.emit("message", message);
   });
-
+  socket.on("sendLocation", (coords) => {
+    io.emit(
+      "message",
+      `https://google.com/maps?q=${coords.latitube},${coords.longitube}`
+    );
+  });
   socket.on("disconnect", () => {
     io.emit("message", "A user has left!");
   });
