@@ -15,6 +15,7 @@ app.use(express.static(publicDirectoryPath));
 // client(emit) -> server (receive) - increment
 
 let count = 0;
+let room = "abc";
 io.on("connection", (socket) => {
   console.log("New Websocket connection");
   socket.emit("countUpdated", count);
@@ -23,6 +24,21 @@ io.on("connection", (socket) => {
     // socket.emit("countUpdated", count);
     io.emit("countUpdated", count);
   });
+
+  socket.on("hello", (count1, cb) => {
+    console.log(count1);
+    io.emit("countUpdated1", count1);
+    cb({
+      status: "ok",
+    });
+  });
+
+  socket.on("room", (room) => {
+    console.log(room);
+    socket.join(room);
+    io.to(room).emit("message", "what is going on");
+  });
+
 });
 server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
