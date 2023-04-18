@@ -12,7 +12,7 @@ let count1 = 1;
 let room = "abc";
 
 socket.on("message", (data) => {
-  console.log(data);
+  document.getElementById("demo").innerHTML = data;
 });
 document.querySelector("#increment").addEventListener("click", () => {
   console.log("clicked");
@@ -27,5 +27,15 @@ document.querySelector("#hello").addEventListener("click", () => {
 });
 
 document.querySelector("#join").addEventListener("click", () => {
-  socket.emit("room", room);
+  socket.emit("room", {
+    username: "rawai",
+    room: room,
+  });
+});
+
+document.querySelector("#join1").addEventListener("click", () => {
+  socket.emit("room", {
+    username: "rawaiaung",
+    room: room,
+  });
 });

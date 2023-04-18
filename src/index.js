@@ -33,12 +33,26 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("room", (room) => {
-    console.log(room);
-    socket.join(room);
-    io.to(room).emit("message", "what is going on");
-  });
+  // socket.on("room", (room) => {
+  //   console.log(room);
+  //   socket.join(room);
+  //   io.to(room).emit("message", "what is going on");
+  // });
 
+  socket.on("room", ({ username, room }) => {
+    const user = {
+      name: username,
+      room: room,
+    };
+
+    socket.join(user.room);
+
+    io.to(room).emit("message", `${user.name}, Welcome to ${user.room} room.`);
+
+    socket.broadcast
+      .to(user.room)
+      .emit("message", `${user.name.toUpperCase()} has joined!`);
+  });
 });
 server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
