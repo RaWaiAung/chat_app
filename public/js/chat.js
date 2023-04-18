@@ -12,7 +12,13 @@ let count1 = 1;
 let room = "abc";
 
 socket.on("message", (data) => {
-  document.getElementById("demo").innerHTML = data;
+  const { text } = data;
+  document.getElementById("welcome").innerHTML = text;
+});
+
+socket.on("join", (data) => {
+  const { join } = data;
+  document.getElementById("joined").innerHTML = join;
 });
 document.querySelector("#increment").addEventListener("click", () => {
   console.log("clicked");
