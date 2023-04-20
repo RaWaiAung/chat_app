@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <h3>Chat App</h3>
     <button id="increment">+1</button>
     <button id="hello">ping</button>
@@ -16,9 +15,21 @@
     <button id="join1">join another</button>
     <p id="welcome"></p>
     <p id="joined"></p>
+    <ul id="list"></ul>
+
+    <form id="myForm" method="post">
+      <label>Username:</label>
+      <input type="text" id="inp1" name="username" /><br />
+      <button type="submit">Submit</button>
+    </form>
+    <br />
+    <br />
+    <form id="sendMessage" method="post">
+      <input type="text" id="inp2" placeholder="Enter your message" /><br />
+      <button type="submit">Submit</button>
+    </form>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
-
-</body>
-
+  </body>
 </html>

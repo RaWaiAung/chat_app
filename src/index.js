@@ -15,6 +15,7 @@ app.use(express.static(publicDirectoryPath));
 // client(emit) -> server (receive) - increment
 
 let count = 0;
+const users = [];
 io.on("connection", (socket) => {
   console.log("New Websocket connection");
   socket.emit("countUpdated", count);
@@ -53,6 +54,15 @@ io.on("connection", (socket) => {
     socket.broadcast.to(user.room).emit("join", {
       join: `${user.name.toUpperCase()} has joined!`,
     });
+  });
+
+  socket.on("user_connected", (username) => {
+    users[username] = socket.id;
+    io.emit("user_connected", username);
+  });
+
+  socket.on("sendMessage", (data) => {
+    console.log(data);
   });
 });
 server.listen(port, () => {
