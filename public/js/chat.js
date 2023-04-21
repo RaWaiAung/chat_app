@@ -76,7 +76,7 @@ sendMessage.addEventListener("submit", (e) => {
   });
 
   var html = "";
-  html += "<li>You said :" + message + "</li>";
+  html += "<li> You said : " + message + "</li>";
   document.getElementById("messages").innerHTML += html;
 
   message.value = " ";
@@ -84,7 +84,7 @@ sendMessage.addEventListener("submit", (e) => {
 
 socket.on("new_message", (data) => {
   var html = "";
-  html += "<li>" + data.sender + "said" + data.message + "</li>";
+  html += "<li>" + data.sender + " said: " + data.message + "</li>";
   document.getElementById("messages").innerHTML += html;
 });
 
