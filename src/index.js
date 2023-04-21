@@ -62,6 +62,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
+    const socketId = users[data.receiver];
+
+    socket.to(socketId).emit("new_message", data);
     console.log(data);
   });
 });
