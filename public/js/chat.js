@@ -1,5 +1,7 @@
-const socket = io();
-
+const socket = io('/chat');
+socket.on("connect", () => {
+  console.log(socket.id);
+});
 socket.on("countUpdated", (count) => {
   console.log("The count updated occur", count);
 });

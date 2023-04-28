@@ -16,8 +16,9 @@ app.use(express.static(publicDirectoryPath));
 
 let count = 0;
 const users = [];
-io.on("connection", (socket) => {
-  console.log("New Websocket connection");
+const chatNsp = io.of(/^\/\w+$/);
+chatNsp.on("connection", (socket) => {
+  console.log("New Websocket connection", socket.id);
   socket.emit("countUpdated", count);
   socket.on("increment", () => {
     count++;
@@ -47,7 +48,7 @@ io.on("connection", (socket) => {
 
     socket.join(user.room);
 
-    io.to(room).emit("message", {
+    chatNsp.to(room).emit("message", {
       text: `${user.name}, Welcome to ${user.room} room.`,
     });
 
