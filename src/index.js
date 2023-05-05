@@ -16,8 +16,16 @@ app.use(express.static(publicDirectoryPath));
 
 let count = 0;
 const users = [];
-const chatNsp = io.of(/^\/\w+$/);
-chatNsp.on("connection", (socket) => {
+const messages = [];
+const addUser = (username, socketId) => {
+  users.push({ username, socketId });
+};
+
+const getUser = (username) => {
+  return users.find((user) => user.username === username);
+};
+
+io.on("connection", (socket) => {
   console.log("New Websocket connection", socket.id);
   socket.emit("countUpdated", count);
   socket.on("increment", () => {
@@ -48,7 +56,7 @@ chatNsp.on("connection", (socket) => {
 
     socket.join(user.room);
 
-    chatNsp.to(room).emit("message", {
+    io.to(room).emit("message", {
       text: `${user.name}, Welcome to ${user.room} room.`,
     });
 
@@ -59,14 +67,15 @@ chatNsp.on("connection", (socket) => {
 
   socket.on("user_connected", (username) => {
     users[username] = socket.id;
+    addUser(username, socket.id);
     io.emit("user_connected", username);
   });
 
   socket.on("sendMessage", (data) => {
-    const socketId = users[data.receiver];
-
-    socket.to(socketId).emit("new_message", data);
-    console.log(data);
+    const user = getUser(data.receiver);
+    socket.to(user.socketId).emit("new_message", data);
+    messages.push({ ...data });
+    console.log(messages);
   });
 });
 server.listen(port, () => {
