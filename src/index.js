@@ -25,6 +25,10 @@ const getUser = (username) => {
   return users.find((user) => user.username === username);
 };
 
+const currendUser = (socketId) => {
+  return users.find((user) => user.socketId === socketId);
+};
+
 io.on("connection", (socket) => {
   console.log("New Websocket connection", socket.id);
   socket.emit("countUpdated", count);
@@ -72,10 +76,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    const user = getUser(data.receiver);
-    socket.to(user.socketId).emit("new_message", data);
+    const { message, receiver } = data;
+    const user = getUser(receiver);
+    const sendUser = currendUser(socket.id);
+    socket.to(user.socketId).emit("new_message", {
+      message,
+      sender: sendUser.username,
+    });
     messages.push({ ...data });
-    console.log(messages);
   });
 });
 server.listen(port, () => {

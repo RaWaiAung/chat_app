@@ -72,7 +72,6 @@ sendMessage.addEventListener("submit", (e) => {
 
   let message = document.getElementById("inp2").value;
   socket.emit("sendMessage", {
-    sender,
     receiver,
     message,
   });
