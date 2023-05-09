@@ -15,8 +15,10 @@ app.use(express.static(publicDirectoryPath));
 // client(emit) -> server (receive) - increment
 
 let count = 0;
+
 const users = [];
 const messages = [];
+
 const addUser = (username, socketId) => {
   users.push({ username, socketId });
 };

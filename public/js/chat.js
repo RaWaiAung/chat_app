@@ -14,6 +14,7 @@ let count1 = 1;
 let room = "abc";
 var sender = "";
 var receiver = "";
+
 socket.on("message", (data) => {
   const { text } = data;
   document.getElementById("welcome").innerHTML = text;
@@ -39,17 +40,6 @@ socket.on("user_connected", (username) => {
 socket.on("join", (data) => {
   const { join } = data;
   document.getElementById("joined").innerHTML = join;
-});
-document.querySelector("#increment").addEventListener("click", () => {
-  console.log("clicked");
-  socket.emit("increment");
-});
-
-document.querySelector("#hello").addEventListener("click", () => {
-  console.log("clicked1");
-  socket.emit("hello", count1++, (res) => {
-    console.log(res.status);
-  });
 });
 
 document.querySelector("#join").addEventListener("click", () => {
@@ -93,3 +83,15 @@ function selectedUser(username) {
   receiver = username;
   console.log("receiver", receiver);
 }
+
+document.querySelector("#increment").addEventListener("click", () => {
+  console.log("clicked");
+  socket.emit("increment");
+});
+
+document.querySelector("#hello").addEventListener("click", () => {
+  console.log("clicked1");
+  socket.emit("hello", count1++, (res) => {
+    console.log(res.status);
+  });
+});
