@@ -10,6 +10,10 @@ socket.on("countUpdated1", (count1) => {
   console.log("The count1 updated occur", count1);
 });
 
+setTimeout(() => {
+  socket.disconnect();
+}, 5000);
+
 let count1 = 1;
 let room = "abc";
 var sender = "";

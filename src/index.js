@@ -72,20 +72,27 @@ io.on("connection", (socket) => {
   });
 
   socket.on("user_connected", (username) => {
-    users[username] = socket.id;
+    // users[username] = socket.id;
     addUser(username, socket.id);
     io.emit("user_connected", username);
   });
 
   socket.on("sendMessage", (data) => {
     const { message, receiver } = data;
-    const user = getUser(receiver);
+    const receiveUser = getUser(receiver);
     const sendUser = currendUser(socket.id);
-    socket.to(user.socketId).emit("new_message", {
+    socket.to(receiveUser.socketId).emit("new_message", {
       message,
       sender: sendUser.username,
     });
     messages.push({ ...data });
+    console.log("this is", receiveUser.socketId, sendUser.socketId);
+  });
+
+  socket.on("disconnect", () => {
+    let offlineUser = currendUser(socket.id);
+    offlineUser = offlineUser.username;
+    console.log("disconnect " + offlineUser);
   });
 });
 server.listen(port, () => {
