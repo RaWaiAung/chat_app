@@ -15,9 +15,12 @@ setTimeout(() => {
 }, 5000);
 
 let count1 = 1;
-let room = "abc";
+let room;
+const peerID = Math.random().toString().substring(2, 8);
 var sender = "";
 var receiver = "";
+
+var peer = new Peer(peerID);
 
 socket.on("message", (data) => {
   const { text } = data;
@@ -46,17 +49,24 @@ socket.on("join", (data) => {
   document.getElementById("joined").innerHTML = join;
 });
 
-document.querySelector("#join").addEventListener("click", () => {
-  socket.emit("room", {
+document.querySelector("#create").addEventListener("click", () => {
+  socket.emit("create_room", {
     username: "rawai",
     room: room,
   });
 });
 
-document.querySelector("#join1").addEventListener("click", () => {
+socket.on("room-created", (data) => {
+  const { roomID } = data;
+  room = roomID
+  console.log("first", data);
+});
+
+document.querySelector("#join").addEventListener("click", () => {
   socket.emit("room", {
     username: "rawaiaung",
-    room: room,
+    peerID: peer,
+    roomID: room,
   });
 });
 

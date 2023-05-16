@@ -18,7 +18,7 @@ let count = 0;
 
 const users = [];
 const messages = [];
-
+const rooms = [];
 const addUser = (username, socketId) => {
   users.push({ username, socketId });
 };
@@ -54,21 +54,36 @@ io.on("connection", (socket) => {
   //   io.to(room).emit("message", "what is going on");
   // });
 
-  socket.on("room", ({ username, room }) => {
+  socket.on("room", ({ username, roomID, peerID }) => {
+    console.log("text", {
+      username,
+      roomID,
+      peerID,
+    });
     const user = {
       name: username,
-      room,
+      roomID,
+      peerID,
     };
+    console.log(user);
+    rooms[roomID] = peerID;
+    console.log(rooms[roomID]);
+    socket.join(user.roomID);
 
-    socket.join(user.room);
-
-    io.to(room).emit("message", {
+    io.to(user.roomID).emit("message", {
       text: `${user.name}, Welcome to ${user.room} room.`,
     });
 
-    socket.broadcast.to(user.room).emit("join", {
+    socket.broadcast.to(user.roomID).emit("join", {
       join: `${user.name.toUpperCase()} has joined!`,
     });
+  });
+
+  socket.on("create_room", () => {
+    const roomID = Math.random().toString().substring(2, 8);
+
+    socket.join(roomID);
+    socket.emit("room-created", { roomID });
   });
 
   socket.on("user_connected", (username) => {
@@ -89,11 +104,11 @@ io.on("connection", (socket) => {
     console.log("this is", receiveUser.socketId, sendUser.socketId);
   });
 
-  socket.on("disconnect", () => {
-    let offlineUser = currendUser(socket.id);
-    offlineUser = offlineUser.username;
-    console.log("disconnect " + offlineUser);
-  });
+  // socket.on("disconnect", () => {
+  //   let offlineUser = currendUser(socket.id);
+  //   offlineUser = offlineUser.username;
+  //   console.log("disconnect " + offlineUser);
+  // });
 });
 server.listen(port, () => {
   console.log(`Server is up on port ${port}`);
