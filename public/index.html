@@ -9,29 +9,20 @@
 
   <body>
     <h3>Chat App</h3>
-    <button id="increment">+1</button>
-    <button id="hello">ping</button>
-    <button id="create">join room</button>
-    <button id="join">join another</button>
-    <p id="welcome"></p>
-    <p id="joined"></p>
-    <ul id="list"></ul>
-    <ul id="messages"></ul>
+    <br />
+    <div id="personal_code">
+      <label>Personal Code:</label>
+      <input type="text" id="personal_code_input" /><br />
+    </div>
+    <br />
 
-    <form id="myForm" method="post">
-      <label>Username:</label>
-      <input type="text" id="inp1" name="username" /><br />
-      <button type="submit">Submit</button>
-    </form>
-    <br />
-    <br />
-    <form id="sendMessage">
-      <input type="text" id="inp2" placeholder="Enter your message" /><br />
-      <button type="submit">Submit</button>
-    </form>
+    <button id="voice_call">voice call</button>
+
+    <button id="video_call">video call</button>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
-    <script src="/js/chat.js"></script>
+    <script src="./js/chat.js" type="module"></script>
+    <script src="./js/webRTCHandler.js" type="module"></script>
+    <script src="./js/constants.js" type="module"></script>
   </body>
 </html>
