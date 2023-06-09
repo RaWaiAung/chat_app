@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
         callerSocketId: socket.id,
         callType: type,
       };
-      console.log(data);
+      console.log("send to client", data);
       io.to(callPersonalCode).emit("pre-offer", data);
     }
   });
